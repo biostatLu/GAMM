@@ -8,7 +8,7 @@ GAMM is implemented in R statistical environment.
 # Example
 
 # Cite
-Haojie Lu<sup>$</sup>, Yongyue Wei<sup>$</sup>, Zhou Jiang, Jinhui Zhang, Ting Wang, Shuiping Huang and Ping Zeng<sup>#</sup> (2021). Integrative eQTL-weighted hierarchical Cox models for SNP-set based time-to-event association studies. Journal of Translational Medicine, in press.
+Haojie Lu<sup>$</sup>, Shuiping Huang and Ping Zeng<sup>#</sup> (2021). A flexible and powerful gene-based association analysis framework for complex phenotypes in minority populations by integrating trans-ethnic genetic risk scores.
 
 # Contact
 We are very grateful to any questions, comments, or bugs reports; and please contact [Ping Zeng](https://github.com/biostatpzeng) via zpstat@xzhmu.edu.cn.
