@@ -6,6 +6,35 @@ To integrate trans-ethnic GRS into GWAS, we here proposed a novel statistical me
 
 GAMM is implemented in R statistical environment.
 # Example
+For joint effect test using LRT in GAMM
+```ruby
+library(data.table)
+library(glmnet)
+library(MASS)
+library(Rcpp)
+library(RcppArmadillo)
+library(doParallel)
+sourceCpp("lmm_pxem.cpp")
+sourceCpp("lmm_pxem2_ZPcisSNP_variance_NotationPXEM_EM.cpp")
+source("LRTSim_lmm_PXEM_Rcpp.R")
+source("estimate_beta.R")
+weight=estimate_beta(BETA,SE,R)
+g = as.matrix(apply(G%*%weight,2,scale)[,1])
+fit = lmm_pxem2_ZPcisSNP(y, X=cbind(1, X, g), G=G, PXEM=TRUE, maxIter=1000)
+simLike <- LRTSimZP(Z = X, E = g, G = G, nsim=1e5, parallel=c("multicore"), ncpus = 1L) ## exact LRT
+
+fitx=lm(y~X)
+obsLike = c((fit$loglik - logLik(fitx))*2)
+plrt = mean(simLike >= obsLike)
+fitmix = pmixLRT(simLike, c(1e3,1e4,1e5)) ## approximate LRT
+
+//' @param weight  true effects for SNPs available for the same trait in another base population
+//' @param y  response variable for GWAS data
+//' @param X  covariates for GWAS data, not include the vector of ones
+//' @param g  GRS = G*weight is the trans-enthic GRS information
+//' @param G  genotype (cis-SNPs) matrix for GWAS
+
+```
 
 # Cite
 Haojie Lu<sup>$</sup>, Shuiping Huang and Ping Zeng<sup>#</sup> (2021). A flexible and powerful gene-based association analysis framework for complex phenotypes in minority populations by integrating trans-ethnic genetic risk scores.
