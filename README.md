@@ -6,6 +6,36 @@ In the present work, we refer to the primary population (e.g., EUR and/or EAS) a
 
 GAMM is implemented in R statistical environment.
 # Example
+For the parameter estimation in GAMM
+```ruby
+library(data.table)
+library(glmnet)
+library(MASS)
+library(Rcpp)
+library(RcppArmadillo)
+library(doParallel)
+sourceCpp("lmm_pxem.cpp")
+sourceCpp("lmm_pxem2_ZPcisSNP_variance_NotationPXEM_EM.cpp")
+source("LRTSim_lmm_PXEM_Rcpp.R")
+source("estimate_beta.R")
+weight=estimate_beta(BETA,SE,R)
+g = as.matrix(apply(G%*%weight,2,scale)[,1])
+fit = lmm_pxem2_ZPcisSNP(y, X=cbind(1, X, g), G=G, PXEM=TRUE, maxIter=1000)
+
+v1 = var(g%*%fit$alpha[5,1])
+v2 = var(G%*%fit$mub)
+v3 = fit$sigma2e
+v4 = var(cbind(1,X)%*%fit$alpha[1:4,1])
+pve = (v1+v2)/(v1+v2+v3+v4)
+pge = v1/(v1+v2)
+
+//' @param y  response variable for GWAS data
+//' @param X  covariates for GWAS data
+//' @param g  GRS = G*weight is the trans-enthic GRS information
+//' @param G  genotype (cis-SNPs) matrix for GWAS
+//' @param maxIter  maximum iteration (default is 1000)
+
+```
 For joint effect test using LRT in GAMM
 ```ruby
 library(data.table)
