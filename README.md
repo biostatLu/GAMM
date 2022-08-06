@@ -21,7 +21,7 @@ source("estimate_beta.R")
 weight=estimate_beta(BETA,SE,R)
 g = as.matrix(apply(G%*%weight,2,scale)[,1])
 fit = lmm_pxem2_ZPcisSNP(y, X=cbind(1, X, g), G=G, PXEM=TRUE, maxIter=1000)
-simLike <- LRTSimZP(Z = X, E = g, G = G, nsim=1e5, parallel=c("multicore"), ncpus = 1L) ## exact LRT
+simLike <- LRTSimZP(Z = X, E = g, G = G, nsim=1e5, parallel=c("multicore"), ncpus = 4L) ## exact LRT
 
 fitx=lm(y~X)
 obsLike = c((fit$loglik - logLik(fitx))*2)
