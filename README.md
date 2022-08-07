@@ -8,24 +8,32 @@ GAMM is implemented in R statistical environment.
 # Example
 For the parameter estimation in GAMM
 ```ruby
-library(data.table)
 library(glmnet)
-library(MASS)
 library(Rcpp)
 library(RcppArmadillo)
-library(doParallel)
-sourceCpp("lmm_pxem.cpp")
 sourceCpp("lmm_pxem2_ZPcisSNP_variance_NotationPXEM_EM.cpp")
 source("LRTSim_lmm_PXEM_Rcpp.R")
 source("estimate_beta.R")
+BETA=read.table("BETA.txt",head=T) ## BETA is the effect size of SNPs in base population from summary statistics and SE is their standard error.
+SE=read.table("SE.txt",head=T)
+R=read.table("R.txt",head=T) ## R is the linkage disequilibrium (LD) matrix which can be calculated with genotypes of population-matched individuals from external reference panels such as the 1000 Genomes Project in the base population. We calculate R in a shrinkage fashion R = 0.95 * as.matrix(cor(G_base_population)) + diag(1-0.95, nrow=nSNPs, ncol=nSNPs)
+G=read.table("G.txt",head=T)
+y=read.table("y.txt",head=T)
+X=read.table("X.txt",head=T)
+BETA=as.matrix(BETA)
+SE=as.matrix(SE)
+R=as.matrix(R)
+G=as.matrix(G)
+y=as.matrix(y)
+X=as.matrix(X)
 weight=estimate_beta(BETA,SE,R)
 g = as.matrix(apply(G%*%weight,2,scale)[,1])
 fit = lmm_pxem2_ZPcisSNP(y, X=cbind(1, X, g), G=G, PXEM=TRUE, maxIter=1000)
 
-v1 = var(g%*%fit$alpha[5,1])
+v1 = var(g%*%fit$alpha[4,1])
 v2 = var(G%*%fit$mub)
 v3 = fit$sigma2e
-v4 = var(cbind(1,X)%*%fit$alpha[1:4,1])
+v4 = var(cbind(1,X)%*%fit$alpha[1:3,1])
 pve = (v1+v2)/(v1+v2+v3+v4)
 pge = v1/(v1+v2)
 
