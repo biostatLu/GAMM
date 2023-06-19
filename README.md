@@ -85,7 +85,7 @@ fitmix = pmixLRT(simLike, c(1e3,1e4,1e5)) ## approximate LRT
 ```
 
 # Cite
-Haojie Lu<sup>$</sup>, Shuo Zhang<sup>$</sup>, Zhou Jiang<sup>$</sup> and Ping Zeng<sup>#</sup> (2022). Leveraging trans-ethnic genetic risk scores to improve association power for complex traits in underrepresented populations.
+Haojie Lu<sup>$</sup>, Shuo Zhang<sup>$</sup>, Zhou Jiang<sup>$</sup> and Ping Zeng<sup>#</sup> (2022). Leveraging trans-ethnic genetic risk scores to improve association power for complex traits in underrepresented populations. **Briefings in Bioinformatics**, in press.
 
 # Contact
 We are very grateful to any questions, comments, or bugs reports; and please contact [Ping Zeng](https://github.com/biostatpzeng) via zpstat@xzhmu.edu.cn.
